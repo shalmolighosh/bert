@@ -750,22 +750,7 @@ def model_fn_builder(bert_config, num_labels, init_checkpoint, learning_rate,
             labels=label_ids, predictions=predictions, weights=is_real_example)
         loss = tf.metrics.mean(values=per_example_loss, weights=is_real_example)
         
-        try:
-          conf_matrix = tf.confusion_matrix(
-                    labels = label_ids,
-                    predictions = predictions,
-                    num_classes=3,
-                    weights=is_real_example
-                )
-
-          return {
-            "eval_accuracy": accuracy,
-            "eval_loss": loss,
-            "conf_matrix":conf_matrix
-        }
-        except Exception as e:
-          print("Some error wrt confusion matrix", e)
-          return {
+        return {
             "eval_accuracy": accuracy,
             "eval_loss": loss
         }

@@ -403,7 +403,10 @@ class ColaProcessor(DataProcessor):
 
 class SemProcessor(DataProcessor):
     """Processor for the CoLA data set (GLUE version)."""
-
+    def __init__(self,use_pair,topic):
+        self.topic = topic
+        self.use_pair = use_pair
+        
     def get_train_examples(self, data_dir):
         """See base class."""
         return self._create_examples(
@@ -427,6 +430,9 @@ class SemProcessor(DataProcessor):
             guid = "%s-%s" % (set_type, i-1)
             text_a = line[0]
             label = line[1]
+            text_b = None
+            if self.use_pair:
+                text_b = self.topic
             if label=="AGAINST":
                     label="0"
             if label=="FAVOR":
@@ -434,7 +440,7 @@ class SemProcessor(DataProcessor):
             if label=="NONE":
                     label="2"
             examples.append(
-                InputExample(guid=guid, text_a=text_a, text_b=None, label=label))
+                InputExample(guid=guid, text_a=text_a, text_b=text_b, label=label))
         return examples
 
 def convert_single_example(ex_index, example, label_list, max_seq_length,

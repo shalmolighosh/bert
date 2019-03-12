@@ -25,6 +25,8 @@ import modeling
 import optimization
 import tokenization
 import tensorflow as tf
+import sys
+
 
 flags = tf.flags
 

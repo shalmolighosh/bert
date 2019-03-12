@@ -764,7 +764,7 @@ def model_fn_builder(bert_config, num_labels, init_checkpoint, learning_rate,
             "conf_matrix":conf_matrix
         }
         except Exception as e:
-          print("Some error wrt confusion matrix, "e)
+          print("Some error wrt confusion matrix", e)
           return {
             "eval_accuracy": accuracy,
             "eval_loss": loss

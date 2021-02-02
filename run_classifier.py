@@ -488,6 +488,54 @@ class DrugProcessor(DataProcessor):
             examples.append(
                 InputExample(guid=guid, text_a=text_a, text_b=text_b, label=label))
         return examples
+    
+class EpidProcessor(DataProcessor):
+    """Processor for the CoLA data set (GLUE version)."""
+    def __init__(self,use_pair,topic):
+        self.topic = topic
+        self.use_pair = use_pair
+        
+    def get_train_examples(self, data_dir):
+        """See base class."""
+        return self._create_examples(
+            self._read_csv(os.path.join(data_dir, "train_preprocessed.csv")), "train")
+
+    def get_dev_examples(self, data_dir):
+        """See base class."""
+        return self._create_examples(
+            self._read_csv(os.path.join(data_dir, "test_preprocessed.csv")), "dev")
+
+    def get_labels(self):
+        """See base class."""
+        return ["0", "1","2","3","4","5"]
+
+    def _create_examples(self, lines, set_type):
+        """Creates examples for the training and dev sets."""
+        examples = []
+        for (i, line) in enumerate(lines):
+            if i == 0:
+                continue
+            guid = "%s-%s" % (set_type, i-1)
+            text_a = line[0]
+            label = line[1]
+            text_b = None
+            if self.use_pair:
+                text_b = self.topic
+            if label=="disease_signs_or_symptoms":
+                    label="0"
+            if label=="disease_transmission":
+                    label="1"
+            if label=="prevention":
+                    label="2"
+            if label=="treatment":
+                    label="3"
+            if label=="deaths_reports":
+                    label="4"
+            if label=="not_related_or_irrelevant":
+                    label="5"
+            examples.append(
+                InputExample(guid=guid, text_a=text_a, text_b=text_b, label=label))
+        return examples
 
 def convert_single_example(ex_index, example, label_list, max_seq_length,
                            tokenizer):

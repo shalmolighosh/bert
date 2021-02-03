@@ -529,7 +529,7 @@ class EpidProcessor(DataProcessor):
                     label="2"
             if label=="treatment":
                     label="3"
-            if label=="deaths_reports":
+            if label=="death_reports":
                     label="4"
             if label=="not_related_or_irrelevant":
                     label="5"
